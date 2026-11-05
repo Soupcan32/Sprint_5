@@ -1,20 +1,23 @@
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
-from data import AdData, Messages
+from data import WAIT_TIMEOUT, AdData, Messages
 from helpers import generate_ad_title
 from locators import AuthModalLocators, CreateAdLocators, HeaderLocators, ProfileLocators
 
 
 class TestCreateAd:
 
-    def test_create_ad_unauthorized_user_shows_auth_modal(self, driver, wait):
+    def test_create_ad_unauthorized_user_shows_auth_modal(self, driver):
+        wait = WebDriverWait(driver, WAIT_TIMEOUT)
         wait.until(EC.element_to_be_clickable(HeaderLocators.POST_AD_BUTTON)).click()
 
         modal_title = wait.until(EC.visibility_of_element_located(AuthModalLocators.MODAL_TITLE)).text
 
         assert modal_title == Messages.AUTH_REQUIRED_TITLE
 
-    def test_create_ad_authorized_user_ad_shown_in_profile(self, logged_in_new_user_driver, wait):
+    def test_create_ad_authorized_user_ad_shown_in_profile(self, logged_in_new_user_driver):
+        wait = WebDriverWait(logged_in_new_user_driver, WAIT_TIMEOUT)
         ad_title = generate_ad_title()
         logged_in_new_user_driver.find_element(*HeaderLocators.POST_AD_BUTTON).click()
 

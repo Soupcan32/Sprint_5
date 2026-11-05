@@ -1,12 +1,14 @@
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
-from data import DEFAULT_USER_NAME, ExistingUser
+from data import DEFAULT_USER_NAME, WAIT_TIMEOUT, ExistingUser
 from locators import AuthModalLocators, HeaderLocators
 
 
 class TestLogin:
 
-    def test_login_existing_user_shows_avatar_and_name(self, driver, wait):
+    def test_login_existing_user_shows_avatar_and_name(self, driver):
+        wait = WebDriverWait(driver, WAIT_TIMEOUT)
         wait.until(EC.element_to_be_clickable(HeaderLocators.LOGIN_AND_REGISTRATION_BUTTON)).click()
         wait.until(EC.visibility_of_element_located(AuthModalLocators.EMAIL_INPUT)).send_keys(ExistingUser.EMAIL)
         driver.find_element(*AuthModalLocators.PASSWORD_INPUT).send_keys(ExistingUser.PASSWORD)

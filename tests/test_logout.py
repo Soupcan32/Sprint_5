@@ -1,11 +1,14 @@
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
+from data import WAIT_TIMEOUT
 from locators import HeaderLocators
 
 
 class TestLogout:
 
-    def test_logout_shows_login_button_instead_of_user(self, logged_in_driver, wait):
+    def test_logout_shows_login_button_instead_of_user(self, logged_in_driver):
+        wait = WebDriverWait(logged_in_driver, WAIT_TIMEOUT)
         logged_in_driver.find_element(*HeaderLocators.LOGOUT_BUTTON).click()
 
         login_button_displayed = wait.until(
